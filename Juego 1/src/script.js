@@ -35,6 +35,12 @@ function create(){
     platforms = this.physics.add.staticGroup();
 
    platforms.create(400, 568, 'ground').setScale(2);
+
+   platforms.create(600, 400, 'ground');
+   platforms.create(100, 290, 'ground');
+   platforms.create(750, 220, 'ground');
+
+
 }
 function update() {
     

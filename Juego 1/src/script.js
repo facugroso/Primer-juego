@@ -26,7 +26,7 @@ function preload() {
     this.load.image('ground', 'assets/platform.png');
     this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
-    this.load.image('dude', 'assets/dude.png', {frameWidth: 32, frameHeight:48});
+    this.load.spritesheet('dude', 'assets/dude.png', {frameWidth: 32, frameHeight:48});
 
 }
 function create(){
@@ -35,12 +35,12 @@ function create(){
     //cuerpo dinámico: cuerpo que si le aplico fuerza, se mueve, puede chocar con otros elementos
     //cuerpo estàtico: siempre tiene una posición y un tamaño. Cuando algo choca contra el no se mueve.
     platforms = this.physics.add.staticGroup();
+    
+    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
-   platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-
-   platforms.create(600, 400, 'ground');
-   platforms.create(100, 290, 'ground');
-   platforms.create(750, 220, 'ground');
+    platforms.create(600, 400, 'ground');
+    platforms.create(100, 290, 'ground');
+    platforms.create(750, 220, 'ground');
 
 
 }

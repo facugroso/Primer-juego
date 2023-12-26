@@ -37,12 +37,35 @@ function create(){
     platforms = this.physics.add.staticGroup();
     
     platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-
     platforms.create(600, 400, 'ground');
     platforms.create(100, 290, 'ground');
     platforms.create(750, 220, 'ground');
 
+    //metodo sprite recibe tres valores por parametros. El primero es la posicion en x donde queremos que empiece nuestro jugador.El segundo parámetro es la coordenada en y. el tercer parámetro es elpersonaje
+    player = this.physics.add.sprite(100, 200, 'dude');
 
+    //para que el personaje permanezca en el rango de nuetra pantalla.
+    player.setCollideWorldBounds(true)
+    //varia entre cero y uno, la caída. Cero no pica y uno pica muchas veces santes de detenerse.
+    player.setBounce(0.3)
+
+    this.anims.create({
+        key: 'left',
+        frame: this.anims.generateFrameNumbers('dude', {star: 0, end: 3}),
+        frameRete: 10,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'turn',
+        frame: [ { key: 'dude', frame: 4 } ],
+        frameRete: 20
+    });
+    this.anims.create({
+        key: 'rigth',
+        frame: this.anims.generateFrameNumbers('dude', {star: 5, end: 8}),
+        frameRete: 10,
+        repeat: -1
+    });
 }
 function update() {
     

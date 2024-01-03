@@ -51,27 +51,64 @@ function create(){
 
     this.anims.create({
         key: 'left',
-        frame: this.anims.generateFrameNumbers('dude', {star: 0, end: 3}),
-        frameRete: 10,
+        frames: this.anims.generateFrameNumbers('dude', {start: 0, end: 3}),
+        frameRate: 10,
         repeat: -1
     });
     this.anims.create({
         key: 'turn',
-        frame: [ { key: 'dude', frame: 4 } ],
-        frameRete: 20
+        frames: [ { key: 'dude', frame: 4 } ],
+        frameRate: 20
     });
     this.anims.create({
-        key: 'rigth',
-        frame: this.anims.generateFrameNumbers('dude', {star: 5, end: 8}),
-        frameRete: 10,
+        key: 'right',
+        frames: this.anims.generateFrameNumbers('dude', {start: 5, end: 8}),
+        frameRate: 10,
         repeat: -1
     });
 
-    player.body.setGravityY(300);
+    //player.body.setGravityY(300);
 
     this.physics.add.collider(player, platforms);
 
-}
+    cursors = this.input.keyboard.createCursorKeys();
+
+    stars = this.physics.add.group({
+        key: 'star',
+        repeat: 11,
+        setXY: {x: 12, y:0, stepX: 70}
+    });
+
+    stars.children.iterate(function(child){
+        child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8))
+    })
+
+
+    this.physics.add.collider(stars, platforms)
+
+    this.physics.add.overlap(player, stars, collectStar, null, true)
+
+} 
+
+
 function update() {
-    
+    if (cursors.left.isDown){
+        player.setVelocityX(-160);
+        player.anims.play('left', true);
+    }else if (cursors.right.isDown) {
+        player.setVelocityX(160);
+        player.anims.play('right', true);
+    }else{
+        player.setVelocityX(0);
+        player.anims.play('turn');
+    }
+
+    if(cursors.up.isDown && player.body.touching.down){
+        player.setVelocityY(-350)
+
+    }
+}
+
+function collectStar(player, star){
+    star.disableBody(true, true)
 }

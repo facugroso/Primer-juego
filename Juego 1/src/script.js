@@ -17,6 +17,9 @@ let config = {
     }
 }; 
 
+let score = 0;
+let scoreText;
+
 let game = new Phaser.Game(config);
 
 
@@ -88,6 +91,8 @@ function create(){
 
     this.physics.add.overlap(player, stars, collectStar, null, true)
 
+    scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000'})
+
 } 
 
 
@@ -110,5 +115,9 @@ function update() {
 }
 
 function collectStar(player, star){
-    star.disableBody(true, true)
+    star.disableBody(true, true);
+
+    score += 10; 
+    scoreText.setText('Score: ' + score)
+
 }

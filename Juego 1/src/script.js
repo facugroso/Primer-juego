@@ -19,6 +19,7 @@ let config = {
 
 let score = 0;
 let scoreText;
+let gameOver = false;
 
 let game = new Phaser.Game(config);
 
@@ -49,8 +50,8 @@ function create(){
 
     //para que el personaje permanezca en el rango de nuetra pantalla.
     player.setCollideWorldBounds(true)
-    //varia entre cero y uno, la caída. Cero no pica y uno pica muchas veces santes de detenerse.
-    player.setBounce(0.3)
+    //varia entre cero y uno, la caída. Cero no pica y uno pica muchas veces antes de detenerse.
+    player.setBounce(0.2)
 
     this.anims.create({
         key: 'left',
@@ -93,10 +94,24 @@ function create(){
 
     scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000'})
 
+    bombs = this.physics.add.group();
+
+    this.physics.add.collider(bombs, platforms);
+
+    this.physics.add.collider(player, bombs, hitBomb, null, this);
+
+
+
 } 
 
 
 function update() {
+    
+    if(gameOver){
+        return 
+    }
+
+
     if (cursors.left.isDown){
         player.setVelocityX(-160);
         player.anims.play('left', true);
@@ -115,9 +130,33 @@ function update() {
 }
 
 function collectStar(player, star){
+
     star.disableBody(true, true);
 
     score += 10; 
-    scoreText.setText('Score: ' + score)
+    scoreText.setText('Score: ' + score);
 
+    if (stars.countActive(true) === 0 ){
+        ///cuantas bombas quedan y si no hay estrellas que las vuelva a poner
+        stars.children.iterate(function(child){
+            child.enableBody(true, child.x, 0, true, true);
+        });
+    
+        let x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+        
+        let bomb = bombs.create(x, 16, 'bomb');
+        bomb.setBounce(1);
+        bomb.setCollideWorldBounds(true);
+        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20)
+    }
+}
+
+function hitBomb (player, bomb) {
+    this.physics.pause();
+
+    player.setTint(0xff0000);
+
+    player.anims.play('turn');
+
+    gameOver = true;
 }

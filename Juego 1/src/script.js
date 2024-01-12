@@ -35,9 +35,6 @@ function preload() {
 }
 function create(){
     this.add.image(400, 300, 'sky');
-    //crea un nuevo grupo de elementos estàticos y los agrega a la variable local platforms.
-    //cuerpo dinámico: cuerpo que si le aplico fuerza, se mueve, puede chocar con otros elementos
-    //cuerpo estàtico: siempre tiene una posición y un tamaño. Cuando algo choca contra el no se mueve.
     platforms = this.physics.add.staticGroup();
     
     platforms.create(400, 568, 'ground').setScale(2).refreshBody();
@@ -45,12 +42,9 @@ function create(){
     platforms.create(100, 290, 'ground');
     platforms.create(750, 220, 'ground');
 
-    //metodo sprite recibe tres valores por parametros. El primero es la posicion en x donde queremos que empiece nuestro jugador.El segundo parámetro es la coordenada en y. el tercer parámetro es elpersonaje
     player = this.physics.add.sprite(100, 200, 'dude');
 
-    //para que el personaje permanezca en el rango de nuetra pantalla.
     player.setCollideWorldBounds(true)
-    //varia entre cero y uno, la caída. Cero no pica y uno pica muchas veces antes de detenerse.
     player.setBounce(0.2)
 
     this.anims.create({
@@ -70,8 +64,6 @@ function create(){
         frameRate: 10,
         repeat: -1
     });
-
-    //player.body.setGravityY(300);
 
     this.physics.add.collider(player, platforms);
 
@@ -132,12 +124,10 @@ function update() {
 function collectStar(player, star){
 
     star.disableBody(true, true);
-
     score += 10; 
     scoreText.setText('Score: ' + score);
 
     if (stars.countActive(true) === 0 ){
-        ///cuantas bombas quedan y si no hay estrellas que las vuelva a poner
         stars.children.iterate(function(child){
             child.enableBody(true, child.x, 0, true, true);
         });
